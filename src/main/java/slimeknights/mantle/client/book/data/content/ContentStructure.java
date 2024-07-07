@@ -2,12 +2,14 @@ package slimeknights.mantle.client.book.data.content;
 
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.element.TextData;
@@ -53,7 +55,7 @@ public class ContentStructure extends PageContent {
 
     try {
       CompoundTag compoundnbt = NbtIo.readCompressed(resource.open());
-      this.template.load(compoundnbt);
+      this.template.load(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().asLookup(), compoundnbt);
     } catch (IOException e) {
       e.printStackTrace();
       return;

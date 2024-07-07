@@ -1,5 +1,6 @@
 package slimeknights.mantle.client.book.structure.level;
 
+import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.entity.LevelEntityGetter;
@@ -34,10 +35,16 @@ public class FakeEntityGetter implements LevelEntityGetter<Entity> {
   }
 
   @Override
+  public <U extends Entity> void get(EntityTypeTest<Entity, U> entityTypeTest, AbortableIterationConsumer<U> abortableIterationConsumer) {}
+
+  @Override
   public <U extends Entity> void get(EntityTypeTest<Entity,U> typeTest, Consumer<U> successConsumer) {}
 
   @Override
   public void get(AABB aabb, Consumer<Entity> successConsumer) {}
+
+  @Override
+  public <U extends Entity> void get(EntityTypeTest<Entity, U> entityTypeTest, AABB aabb, AbortableIterationConsumer<U> abortableIterationConsumer) {}
 
   @Override
   public <U extends Entity> void get(EntityTypeTest<Entity,U> typeTest, AABB aabb, Consumer<U> successConsumer) {}

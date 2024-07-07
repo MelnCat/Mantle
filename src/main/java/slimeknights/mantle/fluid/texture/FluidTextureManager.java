@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /** Manager for handling fluid tooltips */
-public class FluidTextureManager implements Consumer<TextureStitchEvent.Pre> {
+public class FluidTextureManager implements Consumer<TextureStitchEvent.Post> {
   /** Folder containing the logic */
   public static final String FOLDER = "mantle/fluid_texture";
 
@@ -45,7 +45,7 @@ public class FluidTextureManager implements Consumer<TextureStitchEvent.Pre> {
   }
 
   @Override
-  public void accept(TextureStitchEvent.Pre event) {
+  public void accept(TextureStitchEvent.Post event) {
     if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
       long time = System.nanoTime();
       // first, load in all fluid texture files, done in this event as otherwise we cannot guarantee it happens before the atlas stitches
@@ -78,7 +78,9 @@ public class FluidTextureManager implements Consumer<TextureStitchEvent.Pre> {
       }
       this.textures = map;
 
+      // TODO!: Figure out atlases
       // next, register all found textures with the atlas
+      /*
       for (FluidTexture texture : map.values()) {
         event.addSprite(texture.still());
         event.addSprite(texture.flowing());
@@ -87,7 +89,7 @@ public class FluidTextureManager implements Consumer<TextureStitchEvent.Pre> {
           event.addSprite(overlay);
         }
         // no registering camera as its not stitched, its just drawn directly
-      }
+      }*/
       Mantle.logger.info("Loaded {} fluid textures in {} ms", map.size(), (System.nanoTime() - time) / 1000000f);
     }
   }

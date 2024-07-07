@@ -9,11 +9,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.profiling.InactiveProfiler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -65,7 +68,17 @@ public class TemplateLevel extends Level {
   public void sendBlockUpdated(@Nonnull BlockPos pos, @Nonnull BlockState oldState, @Nonnull BlockState newState, int flags) {}
 
   @Override
+  public void playSeededSound(@org.jetbrains.annotations.Nullable Player player, double v, double v1, double v2, Holder<SoundEvent> holder, SoundSource soundSource, float v3, float v4, long l) {
+
+  }
+
+  @Override
   public void playSeededSound(@Nullable Player pPlayer, double pX, double pY, double pZ, SoundEvent pSoundEvent, SoundSource pSoundSource, float pVolume, float pPitch, long pSeed) {}
+
+  @Override
+  public void playSeededSound(@org.jetbrains.annotations.Nullable Player player, Entity entity, Holder<SoundEvent> holder, SoundSource soundSource, float v, float v1, long l) {
+
+  }
 
   @Override
   public void playSeededSound(@Nullable Player pPlayer, Entity pEntity, SoundEvent pSoundEvent, SoundSource pSoundSource, float pVolume, float pPitch, long pSeed) {}
@@ -148,6 +161,11 @@ public class TemplateLevel extends Level {
   }
 
   @Override
+  public FeatureFlagSet enabledFeatures() {
+    return FeatureFlags.DEFAULT_FLAGS;
+  }
+
+  @Override
   public float getShade(@Nonnull Direction p_230487_1_, boolean p_230487_2_) {
     return 1;
   }
@@ -161,6 +179,6 @@ public class TemplateLevel extends Level {
   @Nonnull
   @Override
   public Holder<Biome> getUncachedNoiseBiome(int x, int y, int z) {
-    return registries.registryOrThrow(Registry.BIOME_REGISTRY).getHolderOrThrow(Biomes.PLAINS);
+    return registries.registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.PLAINS);
   }
 }

@@ -3,8 +3,12 @@ package slimeknights.mantle.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -12,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -36,7 +41,7 @@ public final class RetexturedHelper {
    */
   public static Block getBlock(String name) {
     if (!name.isEmpty()) {
-      return Registry.BLOCK.get(new ResourceLocation(name));
+      return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().get(new ResourceLocation(name)));
     }
     return Blocks.AIR;
   }
@@ -62,7 +67,7 @@ public final class RetexturedHelper {
     if (block == Blocks.AIR) {
       return "";
     }
-    return Objects.requireNonNull(Registry.BLOCK.getKey(block)).toString();
+    return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().getKey(block)).toString();
   }
 
 
