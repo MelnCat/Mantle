@@ -3,6 +3,7 @@ package slimeknights.mantle.item;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.block.RetexturedBlock;
 import slimeknights.mantle.block.entity.IRetexturedBlockEntity;
 import slimeknights.mantle.util.RetexturedHelper;
@@ -34,13 +36,6 @@ public class RetexturedBlockItem extends BlockTooltipItem {
   public RetexturedBlockItem(Block block, TagKey<Item> textureTag, Properties builder) {
     super(block, builder);
     this.textureTag = textureTag;
-  }
-
-  @Override
-  public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-    if (this.allowedIn(group)) {
-      addTagVariants(this.getBlock(), textureTag, items, true);
-    }
   }
 
   @Override
@@ -106,7 +101,7 @@ public class RetexturedBlockItem extends BlockTooltipItem {
     if (block == null || block == Blocks.AIR) {
       return setTexture(stack, "");
     }
-    return setTexture(stack, Registry.BLOCK.getKey(block).toString());
+    return setTexture(stack, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).getKey(block).toString());
   }
 
   /**
@@ -120,7 +115,7 @@ public class RetexturedBlockItem extends BlockTooltipItem {
     boolean added = false;
     // using item tags as that is what will be present in the recipe
     Class<?> clazz = block.getClass();
-    for (Holder<Item> candidate : Registry.ITEM.getTagOrEmpty(tag)) {
+    for (Holder<Item> candidate : ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ITEM).getTagOrEmpty(tag)) {
       if (!candidate.isBound()) {
         continue;
       }

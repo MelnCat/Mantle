@@ -1,6 +1,7 @@
 package slimeknights.mantle.client.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -39,7 +40,7 @@ public class RenderingHelper {
     if (facing.getAxis().isHorizontal() && facing != Direction.SOUTH) {
       matrices.pushPose();
       matrices.translate(0.5, 0, 0.5);
-      matrices.mulPose(Vector3f.YP.rotationDegrees(-90f * (facing.get2DDataValue())));
+      matrices.mulPose(Axis.YP.rotationDegrees(-90f * (facing.get2DDataValue())));
       matrices.translate(-0.5, 0, -0.5);
       return true;
     }
@@ -75,11 +76,11 @@ public class RenderingHelper {
     // rotate X, then Y
     float x = modelItem.getX();
     if (x != 0) {
-      matrices.mulPose(Vector3f.XP.rotationDegrees(x));
+      matrices.mulPose(Axis.XP.rotationDegrees(x));
     }
     float y = modelItem.getY();
     if (y != 0) {
-      matrices.mulPose(Vector3f.YP.rotationDegrees(y));
+      matrices.mulPose(Axis.YP.rotationDegrees(y));
     }
 
     // render the actual item

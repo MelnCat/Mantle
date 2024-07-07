@@ -1,6 +1,7 @@
 package slimeknights.mantle.registration.adapter;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.models.blockstates.PropertyDispatch.TriFunction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -15,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.item.BlockTooltipItem;
 import slimeknights.mantle.item.BurnableBlockItem;
 import slimeknights.mantle.item.BurnableSignItem;
@@ -106,7 +108,7 @@ public class ItemRegistryAdapter extends EnumRegistryAdapter<Item> {
 
   /** Registers a block item using the passed block as the name */
   protected  <I extends BlockItem> I register(I entry, Block name) {
-    return this.register(entry, Objects.requireNonNull(Registry.BLOCK.getKey(name)));
+    return this.register(entry, Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).getKey(name)));
   }
 
   /**
@@ -220,7 +222,7 @@ public class ItemRegistryAdapter extends EnumRegistryAdapter<Item> {
     registerBlockItem(burnableItem.apply(object.getPressurePlate(), 300));
     registerBlockItem(burnableItem.apply(object.getButton(), 100));
     // sign
-    registerBlockItem(burnableSignItem.apply(new Item.Properties().stacksTo(16).tab(planks.getItemCategory()), object.getSign(), object.getWallSign()));
+    registerBlockItem(burnableSignItem.apply(new Item.Properties().stacksTo(16), object.getSign(), object.getWallSign()));
   }
 
   /**

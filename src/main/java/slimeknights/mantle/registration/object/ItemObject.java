@@ -3,6 +3,7 @@ package slimeknights.mantle.registration.object;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.core.DefaultedRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -30,7 +31,7 @@ public class ItemObject<I extends ItemLike> implements Supplier<I>, ItemLike, Id
    * Creates a new item object from a supplier instance. Registry name will be fetched from the supplier entry, so the entry must be present during construction
    * @param entry  Existing registry entry, typically a vanilla block or a registered block
    */
-  public ItemObject(DefaultedRegistry<I> registry, I entry) {
+  public ItemObject(Registry<I> registry, I entry) {
     this.entry = RegistryHelper.getHolder(registry, entry);
     this.id = registry.getKey(entry);
   }

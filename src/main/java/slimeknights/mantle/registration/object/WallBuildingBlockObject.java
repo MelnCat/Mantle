@@ -1,8 +1,10 @@
 package slimeknights.mantle.registration.object;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.registration.RegistrationHelper;
 
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public class WallBuildingBlockObject extends BuildingBlockObject {
    * @param wall    Wall entry
    */
   public WallBuildingBlockObject(BuildingBlockObject object, Block wall) {
-    this(object, RegistrationHelper.getCastedHolder(Registry.BLOCK, wall));
+    this(object, RegistrationHelper.getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), wall));
   }
 
   /** Gets the wall for this block */

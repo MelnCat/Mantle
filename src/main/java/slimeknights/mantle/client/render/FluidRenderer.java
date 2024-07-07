@@ -326,11 +326,11 @@ public class FluidRenderer {
     float maxY = to.y();
     float height = (fluid.getAmount() - offset) / capacity;
     if (isGas && flipGas) {
-      from = from.copy();
-      from.setY(maxY + (height * (minY - maxY)));
+      from = new Vector3f(from);
+      from.y = maxY + (height * (minY - maxY));
     } else {
-      to = to.copy();
-      to.setY(minY + (height * (maxY - minY)));
+      to = new Vector3f(to);
+      to.y = minY + (height * (maxY - minY));
     }
 
     // draw cuboid

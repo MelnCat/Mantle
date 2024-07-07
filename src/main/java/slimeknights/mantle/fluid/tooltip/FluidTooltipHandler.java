@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.client.SafeClientAccess;
 import slimeknights.mantle.client.TooltipKey;
@@ -51,7 +53,7 @@ public class FluidTooltipHandler extends SimpleJsonResourceReloadListener {
   public static final Gson GSON = (new GsonBuilder())
     .registerTypeAdapter(ResourceLocation.class, new ResourceLocation.Serializer())
     .registerTypeAdapter(FluidIngredient.class, FluidIngredient.LOADABLE)
-    .registerTypeAdapter(TagKey.class, new TagKeySerializer<>(Registry.FLUID_REGISTRY))
+    .registerTypeAdapter(TagKey.class, new TagKeySerializer<>(Registries.FLUID))
     .setPrettyPrinting()
     .disableHtmlEscaping()
     .create();
@@ -194,7 +196,7 @@ public class FluidTooltipHandler extends SimpleJsonResourceReloadListener {
     // material
     appendMaterial(fluid.getFluid(), amount, tooltip);
     // add mod display name
-    ModList.get().getModContainerById(Registry.FLUID.getKey(fluid.getFluid()).getNamespace())
+    ModList.get().getModContainerById(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID).getKey(fluid.getFluid()).getNamespace())
            .map(container -> container.getModInfo().getDisplayName())
            .ifPresent(name -> tooltip.add(Component.literal(name).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)));
     return tooltip;

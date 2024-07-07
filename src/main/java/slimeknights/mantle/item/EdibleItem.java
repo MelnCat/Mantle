@@ -22,12 +22,12 @@ public class EdibleItem extends Item {
   /** if false, does not display effects of food in tooltip */
   private final boolean displayEffectsTooltip;
 
-  public EdibleItem(FoodProperties foodIn, CreativeModeTab itemGroup) {
-    this(foodIn, itemGroup, true);
+  public EdibleItem(FoodProperties foodIn) {
+    this(foodIn, true);
   }
 
-  public EdibleItem(FoodProperties foodIn, CreativeModeTab itemGroup, boolean displayEffectsTooltip) {
-    super(new Properties().food(foodIn).tab(itemGroup));
+  public EdibleItem(FoodProperties foodIn, boolean displayEffectsTooltip) {
+    super(new Properties().food(foodIn));
     this.displayEffectsTooltip = displayEffectsTooltip;
   }
 

@@ -11,20 +11,11 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import lombok.Getter;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockElement;
-import net.minecraft.client.renderer.block.model.BlockElementFace;
-import net.minecraft.client.renderer.block.model.BlockModel;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.SimpleBakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.client.resources.model.SimpleBakedModel.Builder;
-import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -35,18 +26,13 @@ import net.minecraftforge.client.model.QuadTransformers;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
-import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
+import org.joml.Vector3f;
 import slimeknights.mantle.Mantle;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -205,20 +191,20 @@ public class SimpleBlockModel implements IUnbakedGeometry<SimpleBlockModel> {
     }
     return textures;
   }
-
+/*TODO!: Figure this out too
   /**
    * Gets the texture and model dependencies for a block model
    * @param owner                 Model configuration
    * @param modelGetter           Model getter to fetch parent models
    * @param missingTextureErrors  Missing texture set
    * @return  Textures dependencies
-   */
+   *
   @Override
   public Collection<Material> getMaterials(IGeometryBakingContext owner, Function<ResourceLocation,UnbakedModel> modelGetter, Set<Pair<String,String>> missingTextureErrors) {
     this.fetchParent(owner, modelGetter);
     return getTextures(owner, getElements(), missingTextureErrors);
   }
-
+*/
 
   /* Baking */
 
@@ -272,7 +258,10 @@ public class SimpleBlockModel implements IUnbakedGeometry<SimpleBlockModel> {
     if (transformation.isIdentity()) {
       return QuadTransformers.empty();
     } else {
-      return UnbakedGeometryHelper.applyRootTransform(modelState, transformation);
+      Transformation transform = modelState.getRotation().applyOrigin(new Vector3f(.5F, .5F, .5F));
+      return QuadTransformers.applying(transform.compose(transformation).compose(transform.inverse()));
+      // TODO!: Readd
+      // return UnbakedGeometryHelper.applyRootTransform(modelState, transformation);
     }
   }
 
@@ -309,12 +298,12 @@ public class SimpleBlockModel implements IUnbakedGeometry<SimpleBlockModel> {
   }
 
   @Override
-  public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation location) {
+  public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation location) {
     return bakeModel(owner, this.getElements(), spriteGetter, transform, overrides, location);
   }
 
   /**
-   * Same as {@link #bake(IGeometryBakingContext, ModelBakery, Function, ModelState, ItemOverrides, ResourceLocation)}, but passes in sensible defaults for values unneeded in dynamic models
+   * Same as {@link #bake(IGeometryBakingContext, ModelBaker, Function, ModelState, ItemOverrides, ResourceLocation)}, but passes in sensible defaults for values unneeded in dynamic models
    * @param owner         Model configuration
    * @param transform     Transform to apply
    * @return  Baked model

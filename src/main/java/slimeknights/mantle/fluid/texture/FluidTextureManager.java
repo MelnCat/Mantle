@@ -41,7 +41,7 @@ public class FluidTextureManager implements Consumer<TextureStitchEvent.Post> {
    * Initializes this manager, registering it with the resource manager
    */
   public static void init() {
-    FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, TextureStitchEvent.Pre.class, INSTANCE);
+    FMLJavaModLoadingContext.get().getModEventBus().addListener(EventPriority.NORMAL, false, TextureStitchEvent.Post.class, INSTANCE);
   }
 
   @Override

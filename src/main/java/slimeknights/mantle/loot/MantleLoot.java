@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.Serializer;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.loot.condition.BlockTagLootCondition;
 import slimeknights.mantle.loot.condition.ContainsItemModifierLootCondition;
@@ -62,7 +65,7 @@ public class MantleLoot {
    * @return  Registered loot function
    */
   private static LootItemFunctionType registerFunction(String name, Serializer<? extends LootItemFunction> serializer) {
-    return Registry.register(Registry.LOOT_FUNCTION_TYPE, Mantle.getResource(name), new LootItemFunctionType(serializer));
+    return Registry.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, Mantle.getResource(name), new LootItemFunctionType(serializer));
   }
 
   /**
@@ -72,7 +75,7 @@ public class MantleLoot {
    * @return  Registered loot function
    */
   private static LootItemConditionType registerCondition(String name, Serializer<? extends LootItemCondition> serializer) {
-    return Registry.register(Registry.LOOT_CONDITION_TYPE, Mantle.getResource(name), new LootItemConditionType(serializer));
+    return Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE, Mantle.getResource(name), new LootItemConditionType(serializer));
   }
 
   /**

@@ -2,6 +2,7 @@ package slimeknights.mantle.registration.object;
 
 import lombok.Getter;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -9,6 +10,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -71,17 +73,17 @@ public class WoodBlockObject extends FenceBuildingBlockObject {
                          Block pressurePlate, Block button, Block sign, Block wallSign) {
     super(planks, fence);
     this.woodType = woodType;
-    this.log = getHolder(Registry.BLOCK, log);
-    this.strippedLog = getHolder(Registry.BLOCK, strippedLog);
-    this.wood = getHolder(Registry.BLOCK, wood);
-    this.strippedWood = getHolder(Registry.BLOCK, strippedWood);
-    this.fenceGate = getCastedHolder(Registry.BLOCK, fenceGate);
-    this.door = getCastedHolder(Registry.BLOCK, door);
-    this.trapdoor = getCastedHolder(Registry.BLOCK, trapdoor);
-    this.pressurePlate = getCastedHolder(Registry.BLOCK, pressurePlate);
-    this.button = getCastedHolder(Registry.BLOCK, button);
-    this.sign = getCastedHolder(Registry.BLOCK, sign);
-    this.wallSign = getCastedHolder(Registry.BLOCK, wallSign);
+    this.log = getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), log);
+    this.strippedLog = getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), strippedLog);
+    this.wood = getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), wood);
+    this.strippedWood = getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), strippedWood);
+    this.fenceGate = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), fenceGate);
+    this.door = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), door);
+    this.trapdoor = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), trapdoor);
+    this.pressurePlate = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), pressurePlate);
+    this.button = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), button);
+    this.sign = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), sign);
+    this.wallSign = getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), wallSign);
     ResourceLocation tagName = new ResourceLocation(name.getNamespace(), name.getPath() + "_logs");
     this.logBlockTag = BlockTags.create(tagName);
     this.logItemTag = ItemTags.create(tagName);

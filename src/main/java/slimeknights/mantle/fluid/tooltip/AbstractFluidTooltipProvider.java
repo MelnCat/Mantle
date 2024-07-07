@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /** Provider for fluid tooltip information */
 @SuppressWarnings("unused")
@@ -34,7 +35,7 @@ public abstract class AbstractFluidTooltipProvider extends GenericDataProvider {
   protected abstract void addFluids();
 
   @Override
-  public final void run(CachedOutput cache) throws IOException {
+  public final CompletableFuture<?> run(CachedOutput cache) {
     addFluids();
     builders.forEach((key, builder) -> saveJson(cache, key, builder.build()));
     redirects.forEach((key, target) -> {
@@ -42,6 +43,7 @@ public abstract class AbstractFluidTooltipProvider extends GenericDataProvider {
       json.addProperty("redirect", target.toString());
       saveJson(cache, key, json);
     });
+    return CompletableFuture.completedFuture(null);
   }
 
 

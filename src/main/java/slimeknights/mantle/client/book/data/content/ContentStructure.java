@@ -55,7 +55,7 @@ public class ContentStructure extends PageContent {
 
     try {
       CompoundTag compoundnbt = NbtIo.readCompressed(resource.open());
-      this.template.load(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().asLookup(), compoundnbt);
+      this.template.load(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).asLookup(), compoundnbt);
     } catch (IOException e) {
       e.printStackTrace();
       return;

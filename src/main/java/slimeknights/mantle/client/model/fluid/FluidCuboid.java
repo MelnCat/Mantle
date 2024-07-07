@@ -67,7 +67,7 @@ public class FluidCuboid {
    */
   public Vector3f getFromScaled() {
     if (fromScaled == null) {
-      fromScaled = from.copy();
+      fromScaled = new Vector3f(from);
       fromScaled.mul(1 / 16f);
     }
     return fromScaled;

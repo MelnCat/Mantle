@@ -1,6 +1,9 @@
 package slimeknights.mantle.registration.adapter;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.block.MantleStandingSignBlock;
 import slimeknights.mantle.block.MantleWallSignBlock;
 import slimeknights.mantle.block.StrippableLogBlock;
@@ -133,17 +137,17 @@ public class BlockRegistryAdapter extends EnumRegistryAdapter<Block> {
     Supplier<? extends RotatedPillarBlock> stripped = () -> new RotatedPillarBlock(behaviorCreator.apply(WoodVariant.PLANKS).strength(2.0f));
     RotatedPillarBlock strippedLog = register(stripped.get(), "stripped_" + name + "_log");
     RotatedPillarBlock strippedWood = register(stripped.get(), "stripped_" + name + "_wood");
-    RotatedPillarBlock log = register(new StrippableLogBlock(getHolder(Registry.BLOCK, strippedLog), behaviorCreator.apply(WoodVariant.LOG).strength(2.0f)), name + "_log");
-    RotatedPillarBlock wood = register(new StrippableLogBlock(getHolder(Registry.BLOCK, strippedWood), behaviorCreator.apply(WoodVariant.WOOD).strength(2.0f)), name + "_wood");
+    RotatedPillarBlock log = register(new StrippableLogBlock(getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), strippedLog), behaviorCreator.apply(WoodVariant.LOG).strength(2.0f)), name + "_log");
+    RotatedPillarBlock wood = register(new StrippableLogBlock(getHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), strippedWood), behaviorCreator.apply(WoodVariant.WOOD).strength(2.0f)), name + "_wood");
 
     // doors
     DoorBlock door = register(new WoodenDoorBlock(behaviorCreator.apply(WoodVariant.PLANKS).strength(3.0F).noOcclusion()), name + "_door");
-    TrapDoorBlock trapdoor = register(new TrapDoorBlock(behaviorCreator.apply(WoodVariant.PLANKS).strength(3.0F).noOcclusion().isValidSpawn(Blocks::never)), name + "_trapdoor");
-    FenceGateBlock fenceGate = register(new FenceGateBlock(planksProps), name + "_fence_gate");
+    TrapDoorBlock trapdoor = register(new TrapDoorBlock(behaviorCreator.apply(WoodVariant.PLANKS).strength(3.0F).noOcclusion().isValidSpawn(Blocks::never), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN), name + "_trapdoor");
+    FenceGateBlock fenceGate = register(new FenceGateBlock(planksProps, SoundEvents.FENCE_GATE_CLOSE, SoundEvents.FENCE_GATE_OPEN), name + "_fence_gate");
     // redstone
     BlockBehaviour.Properties redstoneProps = behaviorCreator.apply(WoodVariant.PLANKS).noCollission().strength(0.5F);
-    PressurePlateBlock pressurePlate = register(new PressurePlateBlock(Sensitivity.EVERYTHING, redstoneProps), name + "_pressure_plate");
-    ButtonBlock button = register(new ButtonBlock(redstoneProps), name + "_button");
+    PressurePlateBlock pressurePlate = register(new PressurePlateBlock(Sensitivity.EVERYTHING, redstoneProps, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_OFF, SoundEvents.WOODEN_PRESSURE_PLATE_CLICK_ON), name + "_pressure_plate");
+    ButtonBlock button = register(new ButtonBlock(redstoneProps, 30, true, SoundEvents.WOODEN_BUTTON_CLICK_OFF, SoundEvents.WOODEN_BUTTON_CLICK_ON), name + "_button");
     // signs
     StandingSignBlock standingSign = register(new MantleStandingSignBlock(behaviorCreator.apply(WoodVariant.PLANKS).noCollission().strength(1.0F), woodType), name + "_sign");
     WallSignBlock wallSign = register(new MantleWallSignBlock(behaviorCreator.apply(WoodVariant.PLANKS).noCollission().strength(1.0F).dropsLike(standingSign), woodType), name + "_wall_sign");

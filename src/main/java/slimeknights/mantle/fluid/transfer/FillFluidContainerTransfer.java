@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 import slimeknights.mantle.Mantle;
@@ -60,7 +62,7 @@ public class FillFluidContainerTransfer implements IFluidContainerTransfer {
     if (simulated.getAmount() == amount) {
       FluidStack actual = handler.drain(toDrain.copy(), FluidAction.EXECUTE);
       if (actual.getAmount() != amount) {
-        Mantle.logger.error("Wrong amount drained from {}, expected {}, filled {}", Registry.ITEM.getKey(stack.getItem()), fluid.getAmount(), actual.getAmount());
+        Mantle.logger.error("Wrong amount drained from {}, expected {}, filled {}", ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ITEM).getKey(stack.getItem()), fluid.getAmount(), actual.getAmount());
       }
       return new TransferResult(getFilled(toDrain), toDrain, true);
     }

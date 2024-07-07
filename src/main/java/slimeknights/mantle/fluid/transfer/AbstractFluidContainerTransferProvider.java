@@ -20,6 +20,7 @@ import slimeknights.mantle.recipe.ingredient.FluidIngredient;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /** Data gen for fluid transfer logic */
 @SuppressWarnings("unused")
@@ -61,9 +62,10 @@ public abstract class AbstractFluidContainerTransferProvider extends GenericData
   }
 
   @Override
-  public void run(CachedOutput cache) throws IOException {
+  public CompletableFuture<?> run(CachedOutput cache) {
     addTransfers();
     allTransfers.forEach((id, data) -> saveJson(cache, id, data.toJson()));
+    return CompletableFuture.completedFuture(null);
   }
 
   /** Json with transfer and condition */

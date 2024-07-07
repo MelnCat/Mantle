@@ -7,11 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
@@ -34,14 +30,14 @@ public class FluidsModel implements IUnbakedGeometry<FluidsModel> {
 
   private final SimpleBlockModel model;
   private final List<FluidCuboid> fluids;
-
+/* TODO!: Whatever happened here
   @Override
   public Collection<Material> getMaterials(IGeometryBakingContext owner, Function<ResourceLocation,UnbakedModel> modelGetter, Set<Pair<String,String>> missingTextureErrors) {
     return model.getMaterials(owner, modelGetter, missingTextureErrors);
-  }
+  }*/
 
   @Override
-  public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation location) {
+  public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation location) {
     BakedModel baked = model.bake(owner, bakery, spriteGetter, transform, overrides, location);
     return new Baked(baked, fluids);
   }

@@ -11,11 +11,13 @@ import io.netty.handler.codec.DecoderException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.data.loadable.Loadables;
 import slimeknights.mantle.data.loadable.record.RecordLoadable;
 import slimeknights.mantle.data.registry.GenericLoaderRegistry.IGenericLoader;
@@ -63,7 +65,7 @@ public record BlockPropertiesPredicate(Block block, List<Matcher> properties) im
   private static Property<?> parseProperty(Block block, String name, Function<String, RuntimeException> exception) {
     Property<?> property = block.getStateDefinition().getProperty(name);
     if (property == null) {
-      throw exception.apply("Property " + name + " does not exist in block " + Registry.BLOCK.getKey(block));
+      throw exception.apply("Property " + name + " does not exist in block " + ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).getKey(block));
     }
     return property;
   }

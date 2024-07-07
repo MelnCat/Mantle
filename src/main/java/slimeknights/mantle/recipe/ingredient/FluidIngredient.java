@@ -6,11 +6,13 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.data.loadable.IAmLoadable;
 import slimeknights.mantle.data.loadable.Loadable;
@@ -254,7 +256,7 @@ public abstract class FluidIngredient implements IAmLoadable {
 
     @Override
     public List<FluidStack> getAllFluids() {
-      return RegistryHelper.getTagValueStream(Registry.FLUID, tag)
+      return RegistryHelper.getTagValueStream(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID), tag)
                           .map(fluid -> new FluidStack(fluid, amount))
                           .toList();
     }

@@ -42,7 +42,7 @@ public class RegistrationHelper {
    * @return  Supplier for the given registry casted to the requested type
    */
   @SuppressWarnings("unchecked")  // we know the entry is the given type
-  public static <T, R extends T> Supplier<R> getCastedHolder(DefaultedRegistry<T> registry, T entry) {
+  public static <T, R extends T> Supplier<R> getCastedHolder(Registry<T> registry, T entry) {
     Supplier<T> holder = RegistryHelper.getHolder(registry, entry);
     return () -> (R) holder.get();
   }

@@ -13,11 +13,7 @@ import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.SimpleBakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.client.resources.model.SimpleBakedModel.Builder;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -136,7 +132,7 @@ public class ColoredBlockModel extends SimpleBlockModel {
   }
 
   @Override
-  public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
+  public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
     return bakeModel(owner, getElements(), colorData, spriteGetter, modelTransform, overrides, modelLocation);
   }
 
@@ -272,7 +268,7 @@ public class ColoredBlockModel extends SimpleBlockModel {
     BakedQuad quad = new BakedQuad(vertexData, face.tintIndex, direction, sprite, shade);
     // use our override if specified, fallback to Forge
     if (emissivity == -1) {
-      emissivity = face.emissivity;
+      emissivity = 0;
     }
     if (emissivity > 0) {
       QuadTransformers.settingEmissivity(emissivity).processInPlace(quad);

@@ -82,6 +82,7 @@ public class ConnectedModel implements IUnbakedGeometry<ConnectedModel> {
   /** Map of full texture name to the resulting material, filled during {@link #getMaterials(IGeometryBakingContext, Function, Set)} */
   private Map<String,Material> extraTextures;
 
+  /* TODO!: Figure this out
   @Override
   public Collection<Material> getMaterials(IGeometryBakingContext owner, Function<ResourceLocation,UnbakedModel> modelGetter, Set<Pair<String,String>> missingTextureErrors) {
     Collection<Material> textures = model.getMaterials(owner, modelGetter, missingTextureErrors);
@@ -127,7 +128,7 @@ public class ConnectedModel implements IUnbakedGeometry<ConnectedModel> {
 
     // return textures list
     return textures;
-  }
+  }*/
 
   @Override
   public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation location) {

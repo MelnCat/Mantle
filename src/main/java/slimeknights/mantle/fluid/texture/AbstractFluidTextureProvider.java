@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Data provider for {@link FluidTexture}
@@ -36,7 +37,7 @@ public abstract class AbstractFluidTextureProvider extends GenericDataProvider {
   }
 
   @Override
-  public final void run(CachedOutput cache) throws IOException {
+  public final CompletableFuture<?> run(CachedOutput cache) {
     addTextures();
     IForgeRegistry<FluidType> fluidTypeRegistry = ForgeRegistries.FLUID_TYPES.get();
 
@@ -49,6 +50,7 @@ public abstract class AbstractFluidTextureProvider extends GenericDataProvider {
     }
     // save files
     allTextures.forEach((type, data) -> saveJson(cache, Objects.requireNonNull(fluidTypeRegistry.getKey(type)), data.build().serialize()));
+    return CompletableFuture.completedFuture(null);
   }
 
   /** Override to add your textures at the proper time */

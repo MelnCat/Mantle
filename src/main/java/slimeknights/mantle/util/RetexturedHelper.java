@@ -41,7 +41,7 @@ public final class RetexturedHelper {
    */
   public static Block getBlock(String name) {
     if (!name.isEmpty()) {
-      return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().get(new ResourceLocation(name)));
+      return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).get(new ResourceLocation(name)));
     }
     return Blocks.AIR;
   }
@@ -67,7 +67,7 @@ public final class RetexturedHelper {
     if (block == Blocks.AIR) {
       return "";
     }
-    return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registry(Registries.BLOCK).get().getKey(block)).toString();
+    return Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK).getKey(block)).toString();
   }
 
 

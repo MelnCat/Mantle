@@ -11,11 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.resources.ResourceLocation;
@@ -24,12 +20,14 @@ import net.minecraftforge.client.ForgeRenderTypes;
 import net.minecraftforge.client.RenderTypeGroup;
 import net.minecraftforge.client.model.CompositeModel;
 import net.minecraftforge.client.model.ItemLayerModel;
+import net.minecraftforge.client.model.SimpleModelState;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 import net.minecraftforge.client.model.geometry.UnbakedGeometryHelper;
 import net.minecraftforge.client.model.pipeline.QuadBakingVertexConsumer;
 import net.minecraftforge.client.model.pipeline.TransformingVertexPipeline;
+import org.joml.Vector3f;
 import slimeknights.mantle.data.loadable.common.ColorLoadable;
 import slimeknights.mantle.util.ItemLayerPixels;
 import slimeknights.mantle.util.JsonHelper;
@@ -69,6 +67,7 @@ public class MantleItemLayerModel implements IUnbakedGeometry<MantleItemLayerMod
     return LogicHelper.getOrDefault(layers, index, LayerData.DEFAULT);
   }
 
+  /* TODO!: Material
   @Override
   public Collection<Material> getMaterials(IGeometryBakingContext owner, Function<ResourceLocation,UnbakedModel> modelGetter, Set<Pair<String,String>> missingTextureErrors) {
     ImmutableList.Builder<Material> builder = ImmutableList.builder();
@@ -78,6 +77,7 @@ public class MantleItemLayerModel implements IUnbakedGeometry<MantleItemLayerMod
     textures = builder.build();
     return textures;
   }
+   */
 
   /** Gets the default render type for an item layer */
   public static RenderTypeGroup getDefaultRenderType(IGeometryBakingContext context) {
@@ -96,12 +96,15 @@ public class MantleItemLayerModel implements IUnbakedGeometry<MantleItemLayerMod
     if (transformation.isIdentity()) {
       return modelState;
     } else {
-      return UnbakedGeometryHelper.composeRootTransformIntoModelState(modelState, transformation);
+
+      transformation = transformation.applyOrigin(new Vector3f(-.5F, -.5F, -.5F));
+      return new SimpleModelState(modelState.getRotation().compose(transformation), modelState.isUvLocked());
+     // TODO!: What return UnbakedGeometryHelper.composeRootTransformIntoModelState(modelState, transformation);
     }
   }
 
   @Override
-  public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
+  public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material,TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation) {
     if (textures.isEmpty()) {
       throw new IllegalStateException("Empty textures list");
     }
@@ -158,12 +161,12 @@ public class MantleItemLayerModel implements IUnbakedGeometry<MantleItemLayerMod
   public static ImmutableList<BakedQuad> getQuadsForSprite(int color, int tint, TextureAtlasSprite sprite, Transformation transform, int emissivity, @Nullable ItemLayerPixels pixels) {
     ImmutableList.Builder<BakedQuad> builder = ImmutableList.builder();
 
-    int uMax = sprite.getWidth();
-    int vMax = sprite.getHeight();
+    int uMax = sprite.contents().width();
+    int vMax = sprite.contents().height();
     FaceData faceData = new FaceData(uMax, vMax);
     boolean translucent = false;
 
-    OfInt frames = sprite.getUniqueFrames().iterator();
+    OfInt frames = sprite.contents().getUniqueFrames().iterator();
     boolean hasFrames = frames.hasNext();
     while (frames.hasNext()) {
       int f = frames.nextInt();
@@ -377,8 +380,8 @@ public class MantleItemLayerModel implements IUnbakedGeometry<MantleItemLayerMod
    */
   private static void buildSideQuad(QuadBakingVertexConsumer builder, VertexConsumer consumer, Direction side, int color, TextureAtlasSprite sprite, int u, int v, int size, int luminosity) {
     final float eps = 1e-2f;
-    int width = sprite.getWidth();
-    int height = sprite.getHeight();
+    int width = sprite.contents().width();
+    int height = sprite.contents().height();
     float x0 = (float) u / width;
     float y0 = (float) v / height;
     float x1 = x0, y1 = y0;
