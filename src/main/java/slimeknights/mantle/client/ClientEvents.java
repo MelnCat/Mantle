@@ -6,9 +6,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.level.GameType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,6 +50,7 @@ import java.util.function.Function;
 @SuppressWarnings("unused")
 @EventBusSubscriber(modid = Mantle.modId, value = Dist.CLIENT, bus = Bus.MOD)
 public class ClientEvents {
+  protected static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
   private static final Function<OffhandCooldownTracker,Float> COOLDOWN_TRACKER = OffhandCooldownTracker::getCooldown;
 
   /** Called on construct to initiatlize things that need early entry */
@@ -123,7 +126,7 @@ public class ClientEvents {
     }
 
     // show attack indicator
-    PoseStack matrixStack = event.getPoseStack();
+    GuiGraphics guiGraphics = event.getGuiGraphics();
     switch (indicator) {
       case CROSSHAIR:
         if (!isHotbar && minecraft.options.getCameraType().isFirstPerson()) {
@@ -135,9 +138,8 @@ public class ClientEvents {
             int y = (scaledHeight / 2) - 14 + (2 * (scaledHeight % 2));
             int x = minecraft.getWindow().getGuiScaledWidth() / 2 - 8;
             int width = (int)(cooldown * 17.0F);
-            RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
-            minecraft.gui.blit(matrixStack, x, y, 36, 94, 16, 4);
-            minecraft.gui.blit(matrixStack, x, y, 52, 94, width, 4);
+            guiGraphics.blit(GUI_ICONS_LOCATION, x, y, 36, 94, 16, 4);
+            guiGraphics.blit(GUI_ICONS_LOCATION, x, y, 52, 94, width, 4);
           }
         }
         break;
@@ -152,11 +154,10 @@ public class ClientEvents {
           } else {
             x = centerWidth + 91 + 6 + 32;
           }
-          RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
           int l1 = (int)(cooldown * 19.0F);
           RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-          minecraft.gui.blit(matrixStack, x, y, 0, 94, 18, 18);
-          minecraft.gui.blit(matrixStack, x, y + 18 - l1, 18, 112 - l1, 18, l1);
+          guiGraphics.blit(GUI_ICONS_LOCATION, x, y, 0, 94, 18, 18);
+          guiGraphics.blit(GUI_ICONS_LOCATION,x, y + 18 - l1, 18, 112 - l1, 18, l1);
         }
         break;
     }

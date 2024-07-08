@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -143,13 +142,13 @@ public class FluidDeferredRegister extends DeferredRegisterWrapper<Fluid> {
     }
 
     /** Creates the default block from the given material and light level */
-    public Builder block(Material material, int lightLevel) {
-      return block(sup -> new LiquidBlock(sup, BlockBehaviour.Properties.of(material).lightLevel(state -> lightLevel).noCollission().strength(100.0F).noLootTable()));
+    public Builder block(int lightLevel) {
+      return block(sup -> new LiquidBlock(sup, BlockBehaviour.Properties.of().lightLevel(state -> lightLevel).noCollission().strength(100.0F).noLootTable()));
     }
 
     /** Creates the default block from the given material */
-    public Builder block(Material material) {
-      return block(material, material == Material.LAVA ? 15 : 0);
+    public Builder block() {
+      return block(0);
     }
 
 

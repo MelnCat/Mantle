@@ -3,7 +3,8 @@ package slimeknights.mantle.client.screen.book.element;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +16,7 @@ import slimeknights.mantle.client.screen.book.BookScreen;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class BookElement extends GuiComponent {
+public abstract class BookElement implements Renderable, GuiEventListener {
 
   public BookScreen parent;
 
@@ -25,6 +26,7 @@ public abstract class BookElement extends GuiComponent {
   public int x, y;
 
   public BookElement(int x, int y) {
+    super();
     this.x = x;
     this.y = y;
   }
