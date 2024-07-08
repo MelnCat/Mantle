@@ -255,7 +255,7 @@ public class TagsForCommand {
     Player player = source.getPlayerOrException();
     Vec3 start = player.getEyePosition(1F);
     Vec3 look = player.getLookAngle();
-    double range = Objects.requireNonNull(player.getAttribute(ForgeMod.REACH_DISTANCE.get())).getValue();
+    double range = Objects.requireNonNull(player.getAttribute(ForgeMod.ENTITY_REACH.get())).getValue();
     Vec3 direction = start.add(look.x * range, look.y * range, look.z * range);
     AABB bb = player.getBoundingBox().expandTowards(look.x * range, look.y * range, look.z * range).expandTowards(1, 1, 1);
     EntityHitResult entityTrace = ProjectileUtil.getEntityHitResult(source.getLevel(), player, start, direction, bb, e -> true);

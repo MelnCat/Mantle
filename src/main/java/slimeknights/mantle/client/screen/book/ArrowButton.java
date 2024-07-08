@@ -55,11 +55,10 @@ public class ArrowButton extends Button {
 
     RenderSystem.setShaderColor(r, g, b, 1f);
     blit(matrixStack, this.getX(), this.getY(), this.width, this.height, this.arrowType.x, this.arrowType.y, this.width, this.height, 512, 512);
-    this.renderBg(matrixStack, minecraft, mouseX, mouseY);
   }
 
   @Override
-  public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+  public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
     renderButton(matrixStack, mouseX, mouseY, partialTicks, bookData);
   }
 

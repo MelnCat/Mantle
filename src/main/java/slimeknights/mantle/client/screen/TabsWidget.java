@@ -160,8 +160,8 @@ public class TabsWidget extends Widget {
     poses.translate(0, 0, 32f);
     RenderSystem.applyModelViewMatrix();
     ItemRenderer itemRender = Minecraft.getInstance().getItemRenderer();
-    itemRender.blitOffset = 200.0F;
-    itemRender.renderAndDecorateItem(stack, x, y);
-    itemRender.blitOffset = 0.0F;
+  poses.translate(0.0F, 0.0F, 200.0F);
+    itemRender.renderAndDecorateItem(poses, stack, x, y);
+    poses.translate(0.0F, 0.0F, -200.0F);
   }
 }

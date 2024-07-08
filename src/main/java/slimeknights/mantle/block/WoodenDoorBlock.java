@@ -7,13 +7,14 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import javax.annotation.Nullable;
 
 public class WoodenDoorBlock extends DoorBlock {
   public WoodenDoorBlock(Properties builder) {
-    super(builder, SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN);
+    super(builder, BlockSetType.OAK);
   }
 
   @Nullable

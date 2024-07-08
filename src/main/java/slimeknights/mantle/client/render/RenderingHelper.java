@@ -84,7 +84,7 @@ public class RenderingHelper {
     }
 
     // render the actual item
-    Minecraft.getInstance().getItemRenderer().renderStatic(item, modelItem.getTransform(), light, OverlayTexture.NO_OVERLAY, matrices, buffer, 0);
+    Minecraft.getInstance().getItemRenderer().renderStatic(item, modelItem.getTransform(), light, OverlayTexture.NO_OVERLAY, matrices, buffer, null, 0);
     matrices.popPose();
   }
 }

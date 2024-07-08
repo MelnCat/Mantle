@@ -3,8 +3,8 @@ package slimeknights.mantle.client.model.inventory;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemDisplayContext;
 import org.joml.Vector3f;
 import slimeknights.mantle.client.model.util.ModelHelper;
 import slimeknights.mantle.util.JsonHelper;
@@ -28,7 +28,7 @@ public class ModelItem {
   @Getter
   private final float y;
   @Getter
-  private final TransformType transform;
+  private final ItemDisplayContext transform;
 
   /** Item center location in percentages, lazy loaded */
   private Vector3f centerScaled;
@@ -36,10 +36,10 @@ public class ModelItem {
   private Float sizeScaled;
 
   public ModelItem(Vector3f center, float size, float x, float y) {
-    this(center, size, x, y, TransformType.NONE);
+    this(center, size, x, y, ItemDisplayContext.NONE);
   }
 
-  public ModelItem(Vector3f center, float size, float x, float y, TransformType transform) {
+  public ModelItem(Vector3f center, float size, float x, float y, ItemDisplayContext transform) {
     this.center = center;
     this.size = size;
     this.x = x;
@@ -79,10 +79,10 @@ public class ModelItem {
   }
 
   /** Parses a transform type from a string */
-  private static TransformType parseTransformType(JsonObject json, String key) {
+  private static ItemDisplayContext parseTransformType(JsonObject json, String key) {
     String name = GsonHelper.getAsString(json, key, "none");
-    for (TransformType type : TransformType.values()) {
-      if (name.equals(type.getSerializeName())) {
+    for (ItemDisplayContext type : ItemDisplayContext.values()) {
+      if (name.equals(type.getSerializedName())) {
         return type;
       }
     }
@@ -103,7 +103,7 @@ public class ModelItem {
     Vector3f center = ModelHelper.arrayToVector(json, "center");
     float x = ModelHelper.getRotation(json, "x");
     float y = ModelHelper.getRotation(json, "y");
-    TransformType transformType = parseTransformType(json, "transform");
+    ItemDisplayContext transformType = parseTransformType(json, "transform");
     return new ModelItem(center, size, x, y, transformType);
   }
 

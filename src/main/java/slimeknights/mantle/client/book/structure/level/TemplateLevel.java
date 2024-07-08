@@ -57,7 +57,7 @@ public class TemplateLevel extends Level {
 
   public TemplateLevel(List<StructureBlockInfo> blocks, Predicate<BlockPos> shouldShow) {
     super(
-      new FakeLevelData(), Level.OVERWORLD, Objects.requireNonNull(Minecraft.getInstance().level).registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD),
+      new FakeLevelData(), Level.OVERWORLD, Objects.requireNonNull(Minecraft.getInstance().level).registryAccess(), Objects.requireNonNull(Minecraft.getInstance().level).registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD),
       () -> InactiveProfiler.INSTANCE, true, false, 0, 0
     );
 

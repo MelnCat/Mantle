@@ -1,14 +1,17 @@
 package slimeknights.mantle.data.predicate.damage;
 
+import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.item.enchantment.ThornsEnchantment;
 import slimeknights.mantle.data.predicate.IJsonPredicate;
 import slimeknights.mantle.data.predicate.PredicateRegistry;
 import slimeknights.mantle.data.registry.GenericLoaderRegistry.IGenericLoader;
 
 import java.util.List;
 import java.util.function.Predicate;
-
+import net.minecraft.tags.DamageTypeTags;
 import static slimeknights.mantle.data.registry.GenericLoaderRegistry.SingletonLoader.singleton;
 
 /**
@@ -21,32 +24,37 @@ public interface DamageSourcePredicate extends IJsonPredicate<DamageSource> {
   PredicateRegistry<DamageSource> LOADER = new PredicateRegistry<>("Damage Source Predicate", ANY);
 
   /* Vanilla getters */
-  DamageSourcePredicate PROJECTILE = simple(DamageSource::isProjectile);
-  DamageSourcePredicate EXPLOSION = simple(DamageSource::isExplosion);
-  DamageSourcePredicate BYPASS_ARMOR = simple(DamageSource::isBypassArmor);
-  DamageSourcePredicate DAMAGE_HELMET = simple(DamageSource::isDamageHelmet);
-  DamageSourcePredicate BYPASS_INVULNERABLE = simple(DamageSource::isBypassInvul);
-  DamageSourcePredicate BYPASS_MAGIC = simple(DamageSource::isBypassMagic);
-  DamageSourcePredicate BYPASS_ENCHANTMENTS = simple(DamageSource::isBypassEnchantments);
-  DamageSourcePredicate FIRE = simple(DamageSource::isFire);
-  DamageSourcePredicate MAGIC = simple(DamageSource::isMagic);
-  DamageSourcePredicate FALL = simple(DamageSource::isFall);
+  DamageSourcePredicate PROJECTILE = simple(x -> x.is(DamageTypeTags.IS_PROJECTILE));
+  DamageSourcePredicate EXPLOSION = simple(x -> x.is(DamageTypeTags.IS_EXPLOSION));;
+  DamageSourcePredicate BYPASS_ARMOR = simple(x -> x.is(DamageTypeTags.BYPASSES_ARMOR));;
+  DamageSourcePredicate DAMAGE_HELMET = simple(x -> x.is(DamageTypeTags.DAMAGES_HELMET));;
+  DamageSourcePredicate BYPASS_INVULNERABLE = simple(x -> x.is(DamageTypeTags.BYPASSES_INVULNERABILITY));;
+  DamageSourcePredicate BYPASS_MAGIC = simple(x -> x.is(DamageTypeTags.BYPASSES_EFFECTS));;
+  DamageSourcePredicate BYPASS_ENCHANTMENTS = simple(x -> x.is(DamageTypeTags.BYPASSES_ENCHANTMENTS));;
+  DamageSourcePredicate FIRE = simple(x -> x.is(DamageTypeTags.IS_FIRE));
+  DamageSourcePredicate MAGIC = simple(x -> x.is(DamageTypeTags.IS_PROJECTILE));;
+  DamageSourcePredicate FALL = simple(x -> x.is(DamageTypeTags.IS_FALL));
 
   /** Damage that protection works against */
-  DamageSourcePredicate CAN_PROTECT = simple(source -> !source.isBypassMagic() && !source.isBypassEnchantments() && !source.isBypassInvul());
+  DamageSourcePredicate CAN_PROTECT = simple(x ->
+    x.is(DamageTypeTags.IS_PROJECTILE) &&
+      x.is(DamageTypeTags.BYPASSES_ENCHANTMENTS) &&
+      x.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
+  );
+
   /** Custom concept: damage dealt by non-projectile entities */
   DamageSourcePredicate MELEE = simple(source -> {
-    if (source.isProjectile()) {
+    if (source.is(DamageTypeTags.IS_PROJECTILE)) {
       return false;
     }
     // if it's caused by an entity, require it to simply not be thorns
     // meets most normal melee attacks, like zombies, but also means a melee fire or melee magic attack will work
     if (source.getEntity() != null) {
-      return source instanceof EntityDamageSource entityDamage && !entityDamage.isThorns();
+      return !source.is(DamageTypes.THORNS);
     } else {
       // for non-entity damage, require it to not be any other type
       // blocks fall damage, falling blocks, cactus, but not starving, drowning, freezing
-      return !source.isBypassArmor() && !source.isFire() && !source.isMagic() && !source.isExplosion();
+      return !source.is(DamageTypeTags.BYPASSES_ARMOR) && !source.is(DamageTypeTags.IS_FIRE) && !source.is(DamageTypeTags.BYPASSES_EFFECTS) && !source.is(DamageTypeTags.IS_EXPLOSION);
     }
   });
 
