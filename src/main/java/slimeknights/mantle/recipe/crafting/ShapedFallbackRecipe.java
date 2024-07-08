@@ -10,6 +10,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.recipe.MantleRecipeSerializers;
 import slimeknights.mantle.util.JsonHelper;
 
@@ -45,7 +46,7 @@ public class ShapedFallbackRecipe extends ShapedRecipe {
    * @param alternatives  List of recipe names to fail this match if they match
    */
   public ShapedFallbackRecipe(ShapedRecipe base, List<ResourceLocation> alternatives) {
-    this(base.getId(), base.getGroup(), base.getWidth(), base.getHeight(), base.getIngredients(), base.getResultItem(), alternatives);
+    this(base.getId(), base.getGroup(), base.getWidth(), base.getHeight(), base.getIngredients(), base.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()), alternatives);
   }
 
   @Override

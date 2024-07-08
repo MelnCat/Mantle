@@ -84,7 +84,7 @@ public class EntityIngredientRenderer implements IIngredientRenderer<EntityIngre
             PoseStack modelView = RenderSystem.getModelViewStack();
             modelView.pushPose();
             modelView.mulPoseMatrix(matrixStack.last().pose());
-            InventoryScreen.renderEntityInInventory(size / 2, size, scale, 0, 10, livingEntity);
+            InventoryScreen.renderEntityInInventoryFollowsMouse(modelView, size / 2, size, scale, 0, 10, livingEntity);
             modelView.popPose();
             RenderSystem.applyModelViewMatrix();
             return;

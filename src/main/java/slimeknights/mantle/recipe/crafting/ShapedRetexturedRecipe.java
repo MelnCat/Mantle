@@ -2,6 +2,7 @@ package slimeknights.mantle.recipe.crafting;
 
 import com.google.gson.JsonObject;
 import lombok.Getter;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.item.RetexturedBlockItem;
 import slimeknights.mantle.recipe.MantleRecipeSerializers;
 import slimeknights.mantle.recipe.helper.LoggingRecipeSerializer;
@@ -35,7 +37,7 @@ public class ShapedRetexturedRecipe extends ShapedRecipe {
    * @param matchAll   If true, all inputs must match for the recipe to match
    */
   protected ShapedRetexturedRecipe(ShapedRecipe orig, Ingredient texture, boolean matchAll) {
-    super(orig.getId(), orig.getGroup(), CraftingBookCategory.BUILDING, orig.getWidth(), orig.getHeight(), orig.getIngredients(), orig.getResultItem());
+    super(orig.getId(), orig.getGroup(), CraftingBookCategory.BUILDING, orig.getWidth(), orig.getHeight(), orig.getIngredients(), orig.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()));
     this.texture = texture;
     this.matchAll = matchAll;
   }
@@ -46,12 +48,12 @@ public class ShapedRetexturedRecipe extends ShapedRecipe {
    * @return  Output with texture. Will be blank if the input is not a block
    */
   public ItemStack getRecipeOutput(Item texture) {
-    return RetexturedBlockItem.setTexture(getResultItem().copy(), Block.byItem(texture));
+    return RetexturedBlockItem.setTexture(getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()).copy(), Block.byItem(texture));
   }
 
   @Override
-  public ItemStack assemble(CraftingContainer craftMatrix) {
-    ItemStack result = super.assemble(craftMatrix);
+  public ItemStack assemble(CraftingContainer craftMatrix, RegistryAccess access) {
+    ItemStack result = super.assemble(craftMatrix, access);
     Block currentTexture = null;
     for (int i = 0; i < craftMatrix.getContainerSize(); i++) {
       ItemStack stack = craftMatrix.getItem(i);

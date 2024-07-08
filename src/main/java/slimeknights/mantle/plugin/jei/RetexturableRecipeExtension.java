@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.category.extensions.vanilla.crafting.ICraftingCategor
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.Mantle;
 import slimeknights.mantle.recipe.crafting.ShapedRetexturedRecipe;
 
@@ -40,7 +41,7 @@ public class RetexturableRecipeExtension implements ICraftingCategoryExtension {
                                            .map(stack -> recipe.getRecipeOutput(stack.getItem()))
                                            .toList();
     // empty display means the tag found nothing, so just use the original output
-    this.displayOutputs = displayOutputs.isEmpty() ? List.of(this.recipe.getResultItem()) : displayOutputs;
+    this.displayOutputs = displayOutputs.isEmpty() ? List.of(this.recipe.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess())) : displayOutputs;
 
     // find out which inputs match the texture, we will need to use those for the focus link
     List<Ingredient> inputs = recipe.getIngredients();
@@ -81,7 +82,7 @@ public class RetexturableRecipeExtension implements ICraftingCategoryExtension {
   public void setRecipe(IRecipeLayoutBuilder builder, ICraftingGridHelper craftingGridHelper, IFocusGroup focuses) {
 //    guiItemStacks.addTooltipCallback(this);
     // we need the blank version for the sake of recipe lookup due to the subtype interpreter making it not the same
-    builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(recipe.getResultItem());
+    builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT).addItemStack(recipe.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()));
 
     // add the itemstacks to the grid
     List<List<ItemStack>> inputStacks = recipe.getIngredients().stream().map(ingredient -> List.of(ingredient.getItems())).toList();
