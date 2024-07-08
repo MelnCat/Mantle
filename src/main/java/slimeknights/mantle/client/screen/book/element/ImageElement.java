@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
 import slimeknights.mantle.client.book.data.element.ImageData;
 
 import static java.util.Objects.requireNonNullElse;
@@ -69,8 +70,7 @@ public class ImageElement extends SizedBookElement {
     RenderSystem.setShaderColor(r, g, b, 1f);
 
     if (this.image.item == null) {
-      RenderSystem.setShaderTexture(0, requireNonNullElse(this.image.location, TextureManager.INTENTIONAL_MISSING_TEXTURE));
-      blitRaw(guiGraphics, this.x, this.y, this.width, this.height, this.image.u, this.image.u + this.image.uw, this.image.v, this.image.v + this.image.vh, this.image.texWidth, this.image.texHeight);
+      blitRaw(guiGraphics, requireNonNullElse(this.image.location, TextureManager.INTENTIONAL_MISSING_TEXTURE), this.x, this.y, this.width, this.height, this.image.u, this.image.u + this.image.uw, this.image.v, this.image.v + this.image.vh, this.image.texWidth, this.image.texHeight);
     }
     else {
       guiGraphics.pose().pushPose();
@@ -79,11 +79,11 @@ public class ImageElement extends SizedBookElement {
 
       this.itemElement.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-      matrixStack.popPose();
+      guiGraphics.pose().popPose();
     }
   }
 
-  public static void blitRaw(GuiGraphics guiGraphics, int x, int y, int w, int h, int minU, int maxU, int minV, int maxV, float tw, float th) {
-    guiGraphics.innerBlit(guiGraphics.pose().last().pose(), x, x + w, y, y + h, 0, minU / tw, maxU / tw, minV / th, maxV / th);
+  public static void blitRaw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, int w, int h, int minU, int maxU, int minV, int maxV, float tw, float th) {
+    guiGraphics.innerBlit(textures, x, x + w, y, y + h, 0, minU / tw, maxU / tw, minV / th, maxV / th);
   }
 }

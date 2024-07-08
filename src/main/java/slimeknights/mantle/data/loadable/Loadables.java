@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.data.loadable.common.RegistryLoadable;
 import slimeknights.mantle.data.loadable.primitive.ResourceLocationLoadable;
@@ -44,17 +45,17 @@ public class Loadables {
   public static final StringLoadable<ToolAction> TOOL_ACTION = StringLoadable.DEFAULT.flatXmap(ToolAction::get, ToolAction::name);
 
   /* Registries */
-  public static final ResourceLocationLoadable<SoundEvent> SOUND_EVENT = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.SOUND_EVENT));
-  public static final ResourceLocationLoadable<Fluid> FLUID = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID));
-  public static final ResourceLocationLoadable<MobEffect> MOB_EFFECT = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.MOB_EFFECT));
-  public static final ResourceLocationLoadable<Block> BLOCK = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK));
-  public static final ResourceLocationLoadable<Enchantment> ENCHANTMENT = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT));
-  public static final ResourceLocationLoadable<EntityType<?>> ENTITY_TYPE = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENTITY_TYPE));
-  public static final ResourceLocationLoadable<Item> ITEM = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ITEM));
-  public static final ResourceLocationLoadable<Potion> POTION = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.POTION));
-  public static final ResourceLocationLoadable<ParticleType<?>> PARTICLE_TYPE = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.PARTICLE_TYPE));
-  public static final ResourceLocationLoadable<BlockEntityType<?>> BLOCK_ENTITY_TYPE = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK_ENTITY_TYPE));
-  public static final ResourceLocationLoadable<Attribute> ATTRIBUTE = new RegistryLoadable<>(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ATTRIBUTE));
+  public static final ResourceLocationLoadable<SoundEvent> SOUND_EVENT = new RegistryLoadable<>(Registries.SOUND_EVENT);
+  public static final ResourceLocationLoadable<Fluid> FLUID = new RegistryLoadable<>(Registries.FLUID);
+  public static final ResourceLocationLoadable<MobEffect> MOB_EFFECT = new RegistryLoadable<>(Registries.MOB_EFFECT);
+  public static final ResourceLocationLoadable<Block> BLOCK = new RegistryLoadable<>(Registries.BLOCK);
+  public static final ResourceLocationLoadable<Enchantment> ENCHANTMENT = new RegistryLoadable<>(Registries.ENCHANTMENT);
+  public static final ResourceLocationLoadable<EntityType<?>> ENTITY_TYPE = new RegistryLoadable<>(Registries.ENTITY_TYPE);
+  public static final ResourceLocationLoadable<Item> ITEM = new RegistryLoadable<>(Registries.ITEM);
+  public static final ResourceLocationLoadable<Potion> POTION = new RegistryLoadable<>(Registries.POTION);
+  public static final ResourceLocationLoadable<ParticleType<?>> PARTICLE_TYPE = new RegistryLoadable<>(Registries.PARTICLE_TYPE);
+  public static final ResourceLocationLoadable<BlockEntityType<?>> BLOCK_ENTITY_TYPE = new RegistryLoadable<>(Registries.BLOCK_ENTITY_TYPE);
+  public static final ResourceLocationLoadable<Attribute> ATTRIBUTE = new RegistryLoadable<>(Registries.ATTRIBUTE);
 
   /* Non-default registries */
   public static final StringLoadable<Fluid> NON_EMPTY_FLUID = notValue(FLUID, Fluids.EMPTY, "Fluid cannot be empty");

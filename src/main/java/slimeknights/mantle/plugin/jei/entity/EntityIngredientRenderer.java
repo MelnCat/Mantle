@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -56,7 +57,7 @@ public class EntityIngredientRenderer implements IIngredientRenderer<EntityIngre
   }
 
   @Override
-  public void render(PoseStack matrixStack, @Nullable EntityIngredient.EntityInput input) {
+  public void render(GuiGraphics guiGraphics, @Nullable EntityIngredient.EntityInput input) {
     if (input != null) {
       Level world = Minecraft.getInstance().level;
       EntityType<?> type = input.type();
@@ -81,11 +82,7 @@ public class EntityIngredientRenderer implements IIngredientRenderer<EntityIngre
           }
           // catch exceptions drawing the entity to be safe, any caught exceptions blacklist the entity
           try {
-            PoseStack modelView = RenderSystem.getModelViewStack();
-            modelView.pushPose();
-            modelView.mulPoseMatrix(matrixStack.last().pose());
-            InventoryScreen.renderEntityInInventoryFollowsMouse(modelView, size / 2, size, scale, 0, 10, livingEntity);
-            modelView.popPose();
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, size / 2, size, scale, 0, 10, livingEntity);
             RenderSystem.applyModelViewMatrix();
             return;
           } catch (Exception e) {
@@ -102,10 +99,9 @@ public class EntityIngredientRenderer implements IIngredientRenderer<EntityIngre
 
       // fallback, draw a pink and black "spawn egg"
       RenderSystem.setShader(GameRenderer::getPositionTexShader);
-      RenderSystem.setShaderTexture(0, MISSING);
       RenderSystem.setShaderColor(1, 1, 1, 1);
       int offset = (size - 16) / 2;
-      Screen.blit(matrixStack, offset, offset, 0, 0, 16, 16, 16, 16);
+      guiGraphics.blit(MISSING, offset, offset, 0, 0, 16, 16, 16, 16);
     }
   }
 
