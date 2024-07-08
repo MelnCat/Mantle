@@ -2,8 +2,9 @@ package slimeknights.mantle.client.screen.book;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import slimeknights.mantle.client.screen.book.element.BookElement;
 
 public interface ILayerRenderFunction {
-  void draw(BookElement element, PoseStack matrixStack, int mouseX, int mouseY, float partialTicks, Font fontRenderer);
+  void render(BookElement element, GuiGraphics matrixStack, int mouseX, int mouseY, float partialTicks);
 }

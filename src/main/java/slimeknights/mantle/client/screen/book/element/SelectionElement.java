@@ -92,9 +92,10 @@ public class SelectionElement extends SizedBookElement {
   }
 
   @Override
-  public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
+  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     if (mouseButton == 0 && this.section != null && this.section.isUnlocked(this.parent.advancementCache) && this.isHovered(mouseX, mouseY)) {
       this.parent.openPage(this.parent.book.getFirstPageNumber(this.section, this.parent.advancementCache));
     }
+    return false;
   }
 }

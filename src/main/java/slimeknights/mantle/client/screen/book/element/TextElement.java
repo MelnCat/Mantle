@@ -46,9 +46,10 @@ public class TextElement extends SizedBookElement {
   }
 
   @Override
-  public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
+  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     if (mouseButton == 0 && !lastAction.isEmpty()) {
       StringActionProcessor.process(lastAction, this.parent);
     }
+    return false;
   }
 }

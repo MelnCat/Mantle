@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Transformation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -63,9 +64,9 @@ public class StructureElement extends SizedBookElement {
   }
 
   @Override
-  public void draw(PoseStack transform, int mouseX, int mouseY, float partialTicks, Font fontRenderer) {
+  public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
     MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
-    PoseStack.Pose lastEntryBeforeTry = transform.last();
+    PoseStack.Pose lastEntryBeforeTry = guiGraphics.pose().last();
 
     try {
       long currentTime = System.currentTimeMillis();
@@ -85,16 +86,16 @@ public class StructureElement extends SizedBookElement {
       int structureWidth = this.renderInfo.structureWidth;
       int structureHeight = this.renderInfo.structureHeight;
 
-      transform.pushPose();
+      guiGraphics.pose().pushPose();
 
       final BlockRenderDispatcher blockRender = Minecraft.getInstance().getBlockRenderer();
 
-      transform.translate(this.transX, this.transY, Math.max(structureHeight, Math.max(structureWidth, structureLength)));
-      transform.scale(this.scale, -this.scale, 1);
-      transform.pushTransformation(this.additionalTransform);
-      transform.mulPose(new Quaternionf(0, 0, 0, 1));
+      guiGraphics.pose().translate(this.transX, this.transY, Math.max(structureHeight, Math.max(structureWidth, structureLength)));
+      guiGraphics.pose().scale(this.scale, -this.scale, 1);
+      guiGraphics.pose().pushTransformation(this.additionalTransform);
+      guiGraphics.pose().mulPose(new Quaternionf(0, 0, 0, 1));
 
-      transform.translate(structureLength / -2f, structureHeight / -2f, structureWidth / -2f);
+      guiGraphics.pose().translate(structureLength / -2f, structureHeight / -2f, structureWidth / -2f);
 
       for (int h = 0; h < structureHeight; h++) {
         for (int l = 0; l < structureLength; l++) {
@@ -103,8 +104,8 @@ public class StructureElement extends SizedBookElement {
             BlockState state = this.structureWorld.getBlockState(pos);
 
             if (!state.isAir()) {
-              transform.pushPose();
-              transform.translate(l, h, w);
+              guiGraphics.pose().pushPose();
+              guiGraphics.pose().translate(l, h, w);
 
               int overlay;
 
@@ -124,19 +125,19 @@ public class StructureElement extends SizedBookElement {
               BakedModel model = blockRender.getBlockModel(state);
               for (RenderType renderType : model.getRenderTypes(state, structureWorld.random, modelData)) {
                 blockRender.getModelRenderer().tesselateBlock(
-                  structureWorld, blockRender.getBlockModel(state), state, pos, transform,
+                  structureWorld, blockRender.getBlockModel(state), state, pos, guiGraphics.pose(),
                   buffer.getBuffer(MantleRenderTypes.TRANSLUCENT_FULLBRIGHT), false, structureWorld.random, state.getSeed(pos),
                   overlay, modelData, renderType);
               }
 
-              transform.popPose();
+              guiGraphics.pose().popPose();
             }
           }
         }
       }
 
-      transform.popPose();
-      transform.popPose();
+      guiGraphics.pose().popPose();
+      guiGraphics.pose().popPose();
 
     } catch (Exception e) {
       final long now = System.currentTimeMillis();
@@ -146,16 +147,17 @@ public class StructureElement extends SizedBookElement {
         this.lastPrintedErrorTimeMs = now;
       }
 
-      while (lastEntryBeforeTry != transform.last())
-        transform.popPose();
+      while (lastEntryBeforeTry != guiGraphics.pose().last())
+        guiGraphics.pose().popPose();
     }
 
     buffer.endBatch();
   }
 
   @Override
-  public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
+  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     super.mouseClicked(mouseX, mouseY, mouseButton);
+    return false;
   }
 
   @Override
@@ -166,9 +168,10 @@ public class StructureElement extends SizedBookElement {
   }
 
   @Override
-  public void mouseReleased(double mouseX, double mouseY, int clickedMouseButton) {
-    super.mouseReleased(mouseX, mouseY, clickedMouseButton);
+  public boolean mouseReleased(double mouseX, double mouseY, int clickedMouseButton) {
+    return super.mouseReleased(mouseX, mouseY, clickedMouseButton);
   }
+
 
   private Transformation forRotation(double rX, double rY) {
     Vector3f axis = new Vector3f((float) rY, (float) rX, 0);

@@ -238,5 +238,6 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xmaxerrs" << "1000000000"
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

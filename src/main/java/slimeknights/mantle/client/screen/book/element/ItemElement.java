@@ -126,11 +126,12 @@ public class ItemElement extends SizedBookElement {
   }
 
   @Override
-  public void mouseClicked(double mouseX, double mouseY, int mouseButton) {
+  public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
     if (mouseButton == 0 && this.isHovered(mouseX, mouseY) && this.currentItem < this.itemCycle.size()) {
       if (!StringUtil.isNullOrEmpty(this.action)) {
         StringActionProcessor.process(this.action, this.parent);
       }
     }
+    return false;
   }
 }
