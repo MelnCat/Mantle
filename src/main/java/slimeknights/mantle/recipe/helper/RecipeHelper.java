@@ -6,6 +6,7 @@ import io.netty.handler.codec.DecoderException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -204,7 +205,7 @@ public class RecipeHelper {
   public static <T> T readItem(FriendlyByteBuf buffer, Class<T> clazz) {
     Item item = readItem(buffer);
     if (!clazz.isInstance(item)) {
-      throw new DecoderException("Invalid item '" + ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ITEM).getKey(item) + "', must be " + clazz.getSimpleName());
+      throw new DecoderException("Invalid item '" + BuiltInRegistries.ITEM.getKey(item) + "', must be " + clazz.getSimpleName());
     }
     return clazz.cast(item);
   }

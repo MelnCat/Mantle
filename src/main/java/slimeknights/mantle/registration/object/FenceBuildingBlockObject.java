@@ -1,6 +1,7 @@
 package slimeknights.mantle.registration.object;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceBlock;
@@ -35,7 +36,7 @@ public class FenceBuildingBlockObject extends BuildingBlockObject {
    * @param fence   Fence entry
    */
   public FenceBuildingBlockObject(BuildingBlockObject object, Block fence) {
-    this(object, RegistrationHelper.getCastedHolder(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), fence));
+    this(object, RegistrationHelper.getCastedHolder(BuiltInRegistries.BLOCK, fence));
   }
 
   /** Gets the fence for this block */

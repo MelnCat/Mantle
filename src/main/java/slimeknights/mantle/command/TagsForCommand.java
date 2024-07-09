@@ -9,6 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -137,7 +138,7 @@ public class TagsForCommand {
   /** Item tags for held item */
   private static int heldItem(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
     Item item = context.getSource().getPlayerOrException().getMainHandItem().getItem();
-    return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ITEM), item);
+    return printOwningTags(context, BuiltInRegistries.ITEM, item);
   }
 
   /** Block tags for held item */
@@ -146,7 +147,7 @@ public class TagsForCommand {
     Item item = source.getPlayerOrException().getMainHandItem().getItem();
     Block block = Block.byItem(item);
     if (block != Blocks.AIR) {
-      return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK), block);
+      return printOwningTags(context, BuiltInRegistries.BLOCK, block);
     }
     source.sendSuccess(() -> NO_HELD_BLOCK, true);
     return 0;
