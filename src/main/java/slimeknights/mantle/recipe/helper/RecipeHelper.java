@@ -141,7 +141,7 @@ public class RecipeHelper {
    */
   public static JsonObject serializeFluidStack(FluidStack stack) {
     JsonObject json = new JsonObject();
-    json.addProperty("fluid", ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID).getKey(stack.getFluid()).toString());
+    json.addProperty("fluid", BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString());
     json.addProperty("amount", stack.getAmount());
     return json;
   }

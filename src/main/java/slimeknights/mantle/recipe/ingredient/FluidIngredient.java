@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
@@ -256,7 +257,7 @@ public abstract class FluidIngredient implements IAmLoadable {
 
     @Override
     public List<FluidStack> getAllFluids() {
-      return RegistryHelper.getTagValueStream(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID), tag)
+      return RegistryHelper.getTagValueStream(BuiltInRegistries.FLUID, tag)
                           .map(fluid -> new FluidStack(fluid, amount))
                           .toList();
     }

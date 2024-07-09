@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
@@ -194,7 +195,7 @@ public abstract class EntityIngredient implements Predicate<EntityType<?>>, IAmL
     @Override
     public Set<EntityType<?>> getTypes() {
       if (types == null) {
-        types = RegistryHelper.getTagValueStream(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENTITY_TYPE), tag).collect(ImmutableSet.toImmutableSet());
+        types = RegistryHelper.getTagValueStream(BuiltInRegistries.ENTITY_TYPE, tag).collect(ImmutableSet.toImmutableSet());
       }
       return types;
     }

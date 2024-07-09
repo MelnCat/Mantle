@@ -46,7 +46,7 @@ public class ShapedFallbackRecipe extends ShapedRecipe {
    * @param alternatives  List of recipe names to fail this match if they match
    */
   public ShapedFallbackRecipe(ShapedRecipe base, List<ResourceLocation> alternatives) {
-    this(base.getId(), base.getGroup(), base.getWidth(), base.getHeight(), base.getIngredients(), base.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()), alternatives);
+    this(base.getId(), base.getGroup(), base.getWidth(), base.getHeight(), base.getIngredients(), base.result, alternatives);
   }
 
   @Override

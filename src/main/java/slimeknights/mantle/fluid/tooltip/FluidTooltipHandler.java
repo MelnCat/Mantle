@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import lombok.extern.log4j.Log4j2;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -196,7 +197,7 @@ public class FluidTooltipHandler extends SimpleJsonResourceReloadListener {
     // material
     appendMaterial(fluid.getFluid(), amount, tooltip);
     // add mod display name
-    ModList.get().getModContainerById(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID).getKey(fluid.getFluid()).getNamespace())
+    ModList.get().getModContainerById(BuiltInRegistries.FLUID.getKey(fluid.getFluid()).getNamespace())
            .map(container -> container.getModInfo().getDisplayName())
            .ifPresent(name -> tooltip.add(Component.literal(name).withStyle(ChatFormatting.BLUE, ChatFormatting.ITALIC)));
     return tooltip;

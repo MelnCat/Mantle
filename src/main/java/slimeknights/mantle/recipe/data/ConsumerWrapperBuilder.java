@@ -116,7 +116,7 @@ public class ConsumerWrapperBuilder {
       if (overrideName != null) {
         json.addProperty("type", overrideName.toString());
       } else {
-        json.addProperty("type", Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.RECIPE_SERIALIZER).getKey(getType())).toString());
+        json.addProperty("type", Objects.requireNonNull(BuiltInRegistries.RECIPE_SERIALIZER.getKey(getType())).toString());
       }
       this.serializeRecipeData(json);
       return json;

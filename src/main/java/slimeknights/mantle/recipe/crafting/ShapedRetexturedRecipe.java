@@ -37,9 +37,12 @@ public class ShapedRetexturedRecipe extends ShapedRecipe {
    * @param matchAll   If true, all inputs must match for the recipe to match
    */
   protected ShapedRetexturedRecipe(ShapedRecipe orig, Ingredient texture, boolean matchAll) {
-    super(orig.getId(), orig.getGroup(), CraftingBookCategory.BUILDING, orig.getWidth(), orig.getHeight(), orig.getIngredients(), orig.getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()));
+    super(orig.getId(), orig.getGroup(), CraftingBookCategory.BUILDING, orig.getWidth(), orig.getHeight(), orig.getIngredients(), orig.result);
     this.texture = texture;
     this.matchAll = matchAll;
+  }
+  public ItemStack getResultItem() {
+    return result;
   }
 
   /**
@@ -48,7 +51,7 @@ public class ShapedRetexturedRecipe extends ShapedRecipe {
    * @return  Output with texture. Will be blank if the input is not a block
    */
   public ItemStack getRecipeOutput(Item texture) {
-    return RetexturedBlockItem.setTexture(getResultItem(ServerLifecycleHooks.getCurrentServer().registryAccess()).copy(), Block.byItem(texture));
+    return RetexturedBlockItem.setTexture(getResultItem().copy(), Block.byItem(texture));
   }
 
   @Override

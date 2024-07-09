@@ -4,6 +4,7 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -31,7 +32,7 @@ public class EntityIngredientHelper implements IIngredientHelper<EntityIngredien
 
   @Override
   public ResourceLocation getResourceLocation(EntityIngredient.EntityInput type) {
-    return ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENTITY_TYPE).getKey(type.type());
+    return BuiltInRegistries.ENTITY_TYPE.getKey(type.type());
   }
 
   @Override

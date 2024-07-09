@@ -164,7 +164,7 @@ public class TagsForCommand {
         FluidStack fluidStack = handler.getFluidInTank(0);
         if (!fluidStack.isEmpty()) {
           Fluid fluid = fluidStack.getFluid();
-          return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.FLUID), fluid);
+          return printOwningTags(context, BuiltInRegistries.FLUID, fluid);
         }
       }
     }
@@ -178,7 +178,7 @@ public class TagsForCommand {
     ItemStack stack = source.getPlayerOrException().getMainHandItem();
     Potion potion = PotionUtils.getPotion(stack);
     if (potion != Potions.EMPTY) {
-      return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.POTION), potion);
+      return printOwningTags(context, BuiltInRegistries.POTION, potion);
     }
     source.sendSuccess(() -> NO_HELD_POTION, true);
     return 0;
@@ -193,7 +193,7 @@ public class TagsForCommand {
       int totalTags = 0;
       // print tags for each contained enchantment
       for (Enchantment enchantment : enchantments.keySet()) {
-        totalTags += printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENCHANTMENT), enchantment);
+        totalTags += printOwningTags(context, BuiltInRegistries.ENCHANTMENT, enchantment);
       }
       return totalTags;
     }
@@ -207,7 +207,7 @@ public class TagsForCommand {
     ItemStack stack = source.getPlayerOrException().getMainHandItem();
     if (stack.getItem() instanceof SpawnEggItem egg) {
       EntityType<?> type = egg.getType(stack.getTag());
-      return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENTITY_TYPE), type);
+      return printOwningTags(context, BuiltInRegistries.ENTITY_TYPE, type);
     }
     source.sendSuccess(() -> NO_HELD_ENTITY, true);
     return 0;
@@ -231,7 +231,7 @@ public class TagsForCommand {
       BlockEntity be = level.getBlockEntity(blockTrace.getBlockPos());
       if (be != null) {
         BlockEntityType<?> type = be.getType();
-        return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.BLOCK_ENTITY_TYPE), type);
+        return printOwningTags(context, BuiltInRegistries.BLOCK_ENTITY_TYPE, type);
       }
     }
     // failed
@@ -256,7 +256,7 @@ public class TagsForCommand {
     EntityHitResult entityTrace = ProjectileUtil.getEntityHitResult(source.getLevel(), player, start, direction, bb, e -> true);
     if (entityTrace != null) {
       EntityType<?> target = entityTrace.getEntity().getType();
-      return printOwningTags(context, ServerLifecycleHooks.getCurrentServer().registryAccess().registryOrThrow(Registries.ENTITY_TYPE), target);
+      return printOwningTags(context, BuiltInRegistries.ENTITY_TYPE, target);
     }
     // failed
     source.sendSuccess(() -> NO_TARGETED_ENTITY, true);
