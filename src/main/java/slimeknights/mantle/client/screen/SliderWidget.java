@@ -15,7 +15,8 @@ public class SliderWidget extends Widget {
   public final ElementScreen slideBarTop;
   public final ElementScreen slideBarBottom;
   public final ScalableElementScreen slideBar;
-  private final ResourceLocation texture = new ResourceLocation("mantle:textures/gui/box.png");
+
+  public ResourceLocation texture = new ResourceLocation("mantle:textures/gui/box.png");
 
   // slider info
   protected int minValue;

@@ -26,13 +26,14 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import slimeknights.mantle.data.loadable.common.RegistryLoadable;
 import slimeknights.mantle.data.loadable.primitive.ResourceLocationLoadable;
 import slimeknights.mantle.data.loadable.primitive.StringLoadable;
+import slimeknights.mantle.item.RetexturedBlockItem;
 
 import java.util.function.BiFunction;
 
 /** Various loadable instances provided by this mod */
 @SuppressWarnings({"deprecation", "unused"})
 public class Loadables {
-  private Loadables() {}
+  private Loadables() { }
 
   /** Loadable for a resource location */
   public static final StringLoadable<ResourceLocation> RESOURCE_LOCATION = StringLoadable.DEFAULT.xmap((s, e) -> {
