@@ -1,3 +1,7 @@
+# Cursed 1.20.1 mantle
+
+An attempt at 1.20.1 mantle. Read old description below for compilation
+
 ![Mantle logo](https://raw.github.com/SlimeKnights/Mantle/master/src/main/resources/Mantle.png)  
 # Mantle  
 **Shared code for Forge mods**
